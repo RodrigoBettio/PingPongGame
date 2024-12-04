@@ -6,8 +6,50 @@
     <title>Jogo Ping-Pong</title>
 </head>
 <body>
+    <canvas></canvas>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+    <script>
+        const canvasE1 = document.querySelector("canvas"), //Seletor do canvas
+        canvasCtx = canvasE1.getContext("2d") //Item 2d ou 3d?
 
-    <h1>Ping Pong</h1>
+        function setup(){
+            canvasE1.width = window.innerWidth  //Captura largura e altura da tela
+            canvasCtx.width = window.innerWidth 
+
+            canvasE1.height = window.innerHeight
+            canvasCtx.height = window.innerHeight
+        }
+
+        function desenho() {
+            // Gradiente de fundo
+            const gradiente = canvasCtx.createLinearGradient(0, 0, canvasE1.width, canvasE1.height);
+            gradiente.addColorStop(0, "#000428"); // Azul escuro
+            gradiente.addColorStop(1, "#004e92"); // Azul claro
+
+            canvasCtx.fillStyle = gradiente;
+            canvasCtx.fillRect(0, 0, canvasE1.width, canvasE1.height);
+
+            // Adicionar estrelas
+            for (let i = 0; i < 100; i++) {
+                const x = Math.random() * canvasE1.width; //Distribuição aleatória no espaço
+                const y = Math.random() * canvasE1.height;
+                const size = Math.random() * 1.5; //Tamanho das estrelas
+                canvasCtx.fillStyle = "white";
+                canvasCtx.beginPath();
+                canvasCtx.arc(x, y, size, 0, Math.PI * 10); //(x, y, radius, startAngle, endAngle);
+                canvasCtx.fill();
+            }
+        }
+
+    setup()
+    desenho()
+    </script>
     
 </body>
 </html>
