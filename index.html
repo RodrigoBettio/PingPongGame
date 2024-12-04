@@ -1,94 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jogo Ping-Pong</title>
 </head>
+
 <body>
     <canvas></canvas>
     <style>
-        *{
+        * {
             padding: 0;
             margin: 0;
             overflow: hidden;
         }
-        
     </style>
     <script>
-        const canvasE1 = document.querySelector("canvas"), //Seletor do canvas
-        canvasCtx = canvasE1.getContext("2d") //Item 2d ou 3d?
+        const canvasEl = document.querySelector("canvas"), //Seletor do canvas
+            canvasCtx = canvasEl.getContext("2d") //Item 2d ou 3d?
 
-        const larguraLinha = 12
-        const larguraNave = 15
+        const gapX = 10
 
-        function setup(){
-            canvasE1.width = window.innerWidth  //Captura largura e altura da tela
-            canvasCtx.width = window.innerWidth 
+        const espaco = {
+            w: window.innerWidth,
+            h: window.innerHeight,
+            desenhar: function () {
+                // Gradiente de fundo
+                const gradiente = canvasCtx.createLinearGradient(0, 0, this.w, this.h);
+                gradiente.addColorStop(0, "#000428"); // Azul escuro
+                gradiente.addColorStop(1, "#004e92"); // Azul claro
 
-            canvasE1.height = window.innerHeight
+                canvasCtx.fillStyle = gradiente;
+                canvasCtx.fillRect(0, 0, this.w, this.h);
+
+                // Adicionar estrelas
+                for (let i = 0; i < 100; i++) {
+                    const x = Math.random() * this.w; //Distribuição aleatória no espaço
+                    const y = Math.random() * this.h;
+                    const size = Math.random() * 1.5; //Tamanho das estrelas
+                    canvasCtx.fillStyle = "white";
+                    canvasCtx.beginPath();
+                    canvasCtx.arc(x, y, size, 0, Math.PI * 2); //(x, y, radius, startAngle, endAngle);
+                    canvasCtx.fill();
+                }
+            }
+        }
+
+        const linha = {
+            w: 12,
+            h: espaco.h,
+            desenhar: function () {
+                canvasCtx.fillStyle = "#fff"
+
+                const x = espaco.w / 2 - this.w / 2
+                const y = 0
+                const w = this.w
+                const h = this.h
+
+                canvasCtx.fillRect(x, y, w, h)
+            }
+        }
+
+        const naveEsquerda = {
+            x: gapX,
+            y: 300,
+            w: 15,
+            h: 200,
+            desenhar: function () {
+                canvasCtx.fillRect(this.x, this.y, this.w, this.h) //Eixo x,  eixo y, espessura, altura
+            }
+        }
+
+        const naveDireita = {
+            x: espaco.w - 15 - gapX,
+            y: 400,
+            w: 15,
+            h: 200,
+
+            desenhar: function () {
+                canvasCtx.fillRect(this.x, this.y, this.w, this.h)
+            }
+        }
+
+        const bola = {
+            x: 200,
+            y: 300,
+            r: 20,
+            desenhar: function () {
+                canvasCtx.fillStyle = "#fff"
+                canvasCtx.beginPath()
+                canvasCtx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+                canvasCtx.fill()
+            }
+        }
+
+        const placar = {
+            humano: 1,
+            humano2: 2,
+
+            desenhar: function () {
+                canvasCtx.font = "bold 72px Arial"
+                canvasCtx.textAlign = "center"
+                canvasCtx.textBaseline = "top"
+                canvasCtx.fillStyle = "#fff"
+
+                canvasCtx.fillText(this.humano, espaco.w / 4, 50)
+                canvasCtx.fillText(this.humano2, espaco.w / 4 + espaco.w / 2, 50) //1/4 do campo + metade para ir pro outro lado
+            }
+
+        }
+
+        function setup() {
+            canvasEl.width = window.innerWidth  //Captura largura e altura da tela
+            canvasCtx.width = window.innerWidth
+
+            canvasEl.height = window.innerHeight
             canvasCtx.height = window.innerHeight
         }
 
         function desenho() {
+            //Plano de Fundo
+            espaco.desenhar()
 
-            //Plano de fundo
-            // Gradiente de fundo
-            const gradiente = canvasCtx.createLinearGradient(0, 0, canvasE1.width, canvasE1.height);
-            gradiente.addColorStop(0, "#000428"); // Azul escuro
-            gradiente.addColorStop(1, "#004e92"); // Azul claro
-
-            canvasCtx.fillStyle = gradiente;
-            canvasCtx.fillRect(0, 0, canvasE1.width, canvasE1.height);
-
-            // Adicionar estrelas
-            for (let i = 0; i < 100; i++) {
-                const x = Math.random() * canvasE1.width; //Distribuição aleatória no espaço
-                const y = Math.random() * canvasE1.height;
-                const size = Math.random() * 1.5; //Tamanho das estrelas
-                canvasCtx.fillStyle = "white";
-                canvasCtx.beginPath();
-                canvasCtx.arc(x, y, size, 0, Math.PI * 2); //(x, y, radius, startAngle, endAngle);
-                canvasCtx.fill();
-            }
-            
             //Linha do jogo
-            canvasCtx.fillStyle = "#fff"
-
-            const x = canvasE1.width/2 - larguraLinha /2
-            const y = 0
-            const w = larguraLinha
-            const h = canvasE1.height
-
-            canvasCtx.fillRect(x,y,w,h)
+            linha.desenhar()
 
             //Criação das "naves"
             //Nave esquerda
-            canvasCtx.fillRect(10,300,larguraNave, 200) //Eixo x,  eixo y, espessura, altura
+            naveEsquerda.desenhar()
 
             //Nave direita
-            canvasCtx.fillRect(canvasE1.width - larguraNave - 10 ,400,larguraNave, 200)
+            naveDireita.desenhar()
 
             //Criando a Bola
-            canvasCtx.beginPath()
-
-            canvasCtx.arc(200,300, 20, 0, Math.PI * 2);
-
-            canvasCtx.fill()
+            bola.desenhar()
 
             //Placar do jogo
-            canvasCtx.font = "bold 72px Arial"
-            canvasCtx.textAlign = "center"
-            canvasCtx.textBaseline = "top"
-
-            canvasCtx.fillText("3", canvasE1.width/4, 50)
-            canvasCtx.fillText("4", canvasE1.width/4 + canvasE1.width/2, 50 ) //1/4 do campo + metade para ir pro outro lado
+            placar.desenhar()
 
         }
 
-    setup()
-    desenho()
+        setup()
+        desenho()
     </script>
-    
+
 </body>
+
 </html>
