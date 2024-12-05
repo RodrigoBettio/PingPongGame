@@ -99,6 +99,7 @@
             r: 20,
             speedX: 3, // Velocidade horizontal
             speedY: 3, // Velocidade vertical
+
             _mover: function () {
                 this.x += this.speedX;
                 this.y += this.speedY;
@@ -106,17 +107,39 @@
                 // Rebote nas laterais (superior e inferior)
                 if (this.y - this.r < 0 || this.y + this.r > espaco.h) {
                     this.speedY *= -1; // Inverte a direção vertical
+                    this.speedX *= 1.08;
+                    this.speedY *= 1.08;
+                }
+
+                // Rebote na nave esquerda
+                if (
+                    this.x - this.r < naveEsquerda.x + naveEsquerda.w &&
+                    this.y > naveEsquerda.y &&
+                    this.y < naveEsquerda.y + naveEsquerda.h
+                ) {
+                    this.speedX *= -1; // Inverte a direção horizontal
+                    this.x = naveEsquerda.x + naveEsquerda.w + this.r; // Evita sobreposição
+                }
+
+                // Rebote na nave direita
+                if (
+                    this.x + this.r > naveDireita.x &&
+                    this.y > naveDireita.y &&
+                    this.y < naveDireita.y + naveDireita.h
+                ) {
+                    this.speedX *= -1; // Inverte a direção horizontal
+                    this.x = naveDireita.x - this.r; // Evita sobreposição
                 }
             },
 
             desenhar: function () {
-                canvasCtx.fillStyle = "#fff"
-                canvasCtx.beginPath()
+                canvasCtx.fillStyle = "#fff";
+                canvasCtx.beginPath();
                 canvasCtx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-                canvasCtx.fill()
+                canvasCtx.fill();
 
-                this._mover() //Convenção colocar underline para funções internas
-            },
+                this._mover(); // Convenção colocar underline para funções internas
+            }
         }
 
         const placar = {
@@ -166,7 +189,6 @@
 
             //Linha do jogo
             linha.desenhar()
-
             // Movimento das naves
             if (teclas["w"] && naveEsquerda.y > 0) {
                 naveEsquerda.y -= 5;
