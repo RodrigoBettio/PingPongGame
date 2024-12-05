@@ -25,6 +25,18 @@
         const espaco = {
             w: window.innerWidth,
             h: window.innerHeight,
+            estrelas: [], // Array para armazenar as estrelas
+
+            criarEstrelas: function () {
+                // Gerar as estrelas apenas uma vez
+                for (let i = 0; i < 100; i++) {
+                    const x = Math.random() * this.w;
+                    const y = Math.random() * this.h;
+                    const size = Math.random() * 1.5;
+                    this.estrelas.push({ x, y, size });
+                }
+            },
+
             desenhar: function () {
                 // Gradiente de fundo
                 const gradiente = canvasCtx.createLinearGradient(0, 0, this.w, this.h);
@@ -34,14 +46,12 @@
                 canvasCtx.fillStyle = gradiente;
                 canvasCtx.fillRect(0, 0, this.w, this.h);
 
-                // Adicionar estrelas
-                for (let i = 0; i < 100; i++) {
-                    const x = Math.random() * this.w; //Distribuição aleatória no espaço
-                    const y = Math.random() * this.h;
-                    const size = Math.random() * 1.5; //Tamanho das estrelas
-                    canvasCtx.fillStyle = "white";
+                // Desenhar as estrelas armazenadas
+                canvasCtx.fillStyle = "white";
+                for (let i = 0; i < this.estrelas.length; i++) {
+                    const estrela = this.estrelas[i];
                     canvasCtx.beginPath();
-                    canvasCtx.arc(x, y, size, 0, Math.PI * 2); //(x, y, radius, startAngle, endAngle);
+                    canvasCtx.arc(estrela.x, estrela.y, estrela.size, 0, Math.PI * 2);
                     canvasCtx.fill();
                 }
             }
@@ -140,6 +150,8 @@
 
             canvasEl.height = window.innerHeight
             canvasCtx.height = window.innerHeight
+
+            espaco.criarEstrelas(); //Cria as estrelas apenas uma vez por partida
         }
 
         function desenhar() {
