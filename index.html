@@ -97,10 +97,16 @@
             x: 200,
             y: 300,
             r: 20,
-            speed: 3,
+            speedX: 3, // Velocidade horizontal
+            speedY: 3, // Velocidade vertical
             _mover: function () {
-                this.x += 1 * this.speed
-                this.y += 1 * this.speed
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                // Rebote nas laterais (superior e inferior)
+                if (this.y - this.r < 0 || this.y + this.r > espaco.h) {
+                    this.speedY *= -1; // Inverte a direção vertical
+                }
             },
 
             desenhar: function () {
