@@ -113,8 +113,9 @@
             x: espaco.w / 2,
             y: espaco.h / 2,
             r: 20,
-            speedX: 3,
-            speedY: 3,
+            //Velocidade e direção aleatórias 
+            speedX: 3 * (Math.random() > 0.5 ? 1 : -1); //Velocidade negativa ou positiva entre 3 e 5 do eixo X
+            speedY: 3 * (Math.random() > 0.5 ? 1 : -1); //Velocidade negativa ou positiva entre 3 e 5 do eixo X (Ambos criados com chatgpt)
 
             _mover: function () {
                 this.x += this.speedX;
