@@ -93,12 +93,28 @@
             }
         }
 
+        const placar = {
+            humano1: 0,
+            humano2: 0,
+
+            desenhar: function () {
+                canvasCtx.font = "bold 72px Arial"
+                canvasCtx.textAlign = "center"
+                canvasCtx.textBaseline = "top"
+                canvasCtx.fillStyle = "#fff"
+
+                canvasCtx.fillText(this.humano1, espaco.w / 4, 50)
+                canvasCtx.fillText(this.humano2, espaco.w / 4 + espaco.w / 2, 50) //1/4 do campo + metade para ir pro outro lado
+            }
+
+        }
+
         const bola = {
-            x: 200,
-            y: 300,
+            x: espaco.w / 2,
+            y: espaco.h / 2,
             r: 20,
-            speedX: 3, // Velocidade horizontal
-            speedY: 3, // Velocidade vertical
+            speedX: 3,
+            speedY: 3,
 
             _mover: function () {
                 this.x += this.speedX;
@@ -114,22 +130,43 @@
                 // Rebote na nave esquerda
                 if (
                     this.x - this.r < naveEsquerda.x + naveEsquerda.w &&
-                    this.y > naveEsquerda.y &&
-                    this.y < naveEsquerda.y + naveEsquerda.h
+                    this.y + this.r >= naveEsquerda.y &&
+                    this.y - this.r <= naveEsquerda.y + naveEsquerda.h //Verificação para bater na nave
                 ) {
-                    this.speedX *= -1; // Inverte a direção horizontal
-                    this.x = naveEsquerda.x + naveEsquerda.w + this.r; // Evita sobreposição
+                    this.speedX *= -1;
+                    this.x = naveEsquerda.x + naveEsquerda.w + this.r;
                 }
 
                 // Rebote na nave direita
                 if (
                     this.x + this.r > naveDireita.x &&
-                    this.y > naveDireita.y &&
-                    this.y < naveDireita.y + naveDireita.h
+                    this.y + this.r >= naveDireita.y &&
+                    this.y - this.r <= naveDireita.y + naveDireita.h //Verificação para bater na nave
                 ) {
-                    this.speedX *= -1; // Inverte a direção horizontal
-                    this.x = naveDireita.x - this.r; // Evita sobreposição
+                    this.speedX *= -1;
+                    this.x = naveDireita.x - this.r;
                 }
+
+                // Verifica se a bola saiu pela esquerda
+                if (this.x - this.r < 0) {
+                    placar.humano2 += 1; // Incrementa a pontuação do jogador 2
+                    this._reset(); // Reinicia a bola
+                }
+
+                // Verifica se a bola saiu pela sdireita
+                if (this.x + this.r > espaco.w) {
+                    placar.humano1 += 1; // Incrementa a pontuação do jogador 1
+                    this._reset(); // Reinicia a bola
+                }
+            },
+
+            _reset: function () {
+                this.x = espaco.w / 2;
+                this.y = espaco.h / 2;
+
+                //Velocidade e direção aleatórias 
+                this.speedX = 3 * (Math.random() > 0.5 ? 1 : -1); //Velocidade negativa ou positiva entre 3 e 5 do eixo X
+                this.speedY = 3 * (Math.random() > 0.5 ? 1 : -1); //Velocidade negativa ou positiva entre 3 e 5 do eixo X (Ambos criados com chatgpt)
             },
 
             desenhar: function () {
@@ -139,24 +176,9 @@
                 canvasCtx.fill();
 
                 this._mover(); // Convenção colocar underline para funções internas
-            }
-        }
+            },
+        };
 
-        const placar = {
-            humano: 1,
-            humano2: 2,
-
-            desenhar: function () {
-                canvasCtx.font = "bold 72px Arial"
-                canvasCtx.textAlign = "center"
-                canvasCtx.textBaseline = "top"
-                canvasCtx.fillStyle = "#fff"
-
-                canvasCtx.fillText(this.humano, espaco.w / 4, 50)
-                canvasCtx.fillText(this.humano2, espaco.w / 4 + espaco.w / 2, 50) //1/4 do campo + metade para ir pro outro lado
-            }
-
-        }
 
         const teclas = {
             "ArrowUp": false,
