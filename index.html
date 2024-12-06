@@ -280,6 +280,24 @@
             espaco.w = canvasEl.width;
             espaco.h = canvasEl.height;
 
+            if (window.innerWidth < 768) { // Ajusta o tamanho para celulares
+                naveEsquerda.h = 100; 
+                naveDireita.h = 100;
+                naveEsquerda.w = 10; 
+                naveDireita.w = 10;
+                bola.r = 10; 
+                bola.speedX = 2 * (Math.random() > 0.5 ? 1 : -1); 
+                bola.speedY = 2 * (Math.random() > 0.5 ? 1 : -1);
+            } else {
+                naveEsquerda.h = 200; 
+                naveDireita.h = 200;
+                naveEsquerda.w = 15;
+                naveDireita.w = 15;
+                bola.r = 20;
+                bola.speedX = 3 * (Math.random() > 0.5 ? 1 : -1);
+                bola.speedY = 3 * (Math.random() > 0.5 ? 1 : -1);
+            }
+
             espaco.criarEstrelas(); // Cria as estrelas apenas uma vez por partida
         }
 
