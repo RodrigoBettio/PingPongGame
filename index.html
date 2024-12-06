@@ -181,6 +181,7 @@
         };
 
 
+        //Para computador
         const teclas = {
             "ArrowUp": false,
             "ArrowDown": false,
@@ -196,8 +197,45 @@
             teclas[event.key] = false; // Marca a tecla como solta
         });
 
+
+        // Para o celular
+        canvasEl.addEventListener("touchmove", moverNave); //Para o usuário deslizar o dedo na tela
+
+        function moverNave(event) {
+            // Evita o scroll
+            event.preventDefault();
+
+            const toques = event.touches;
+
+            for (let i = 0; i < toques.length; i++) {
+                const toque = toques[i];
+                const toqueX = toque.clientX;
+                const toqueY = toque.clientY; //Propriedade para pegar o toque do usuário
+
+                // Controle da nave esquerda 
+                if (toqueX < espaco.w / 2) {
+                    naveEsquerda.y = toqueY - naveEsquerda.h / 2;
+
+                    // Nave não sair da tela
+                    if (naveEsquerda.y < 0) naveEsquerda.y = 0;
+                    if (naveEsquerda.y + naveEsquerda.h > espaco.h)
+                        naveEsquerda.y = espaco.h - naveEsquerda.h;
+                }
+
+                // Controle da nave direita 
+                if (toqueX >= espaco.w / 2) {
+                    naveDireita.y = toqueY - naveDireita.h / 2;
+
+                    // Para a nave não sair da tela
+                    if (naveDireita.y < 0) naveDireita.y = 0;
+                    if (naveDireita.y + naveDireita.h > espaco.h)
+                        naveDireita.y = espaco.h - naveDireita.h;
+                }
+            }
+        }
+
         function setup() {
-            canvasEl.width = window.innerWidth  //Captura largura e altura da tela
+            canvasEl.width = window.innerWidth  //Pega a largura e altura da tela
             canvasCtx.width = window.innerWidth
 
             canvasEl.height = window.innerHeight
