@@ -250,7 +250,10 @@
         }
 
         // Quando a janela for redimensionada, verifica a orientação
-        window.addEventListener("resize", verificarOrientacao);
+        window.addEventListener("resize", () => {
+            verificarOrientacao();
+            setup();
+        });
 
         // Cria a div de aviso de orientação logo que a página carregar (Criado com chatgpt)
         document.addEventListener("DOMContentLoaded", function () {
