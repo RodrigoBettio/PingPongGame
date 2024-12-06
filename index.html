@@ -116,10 +116,15 @@
             //Velocidade e direção aleatórias 
             speedX: 3 * (Math.random() > 0.5 ? 1 : -1), //Velocidade negativa ou positiva entre 3 e 5 do eixo X
             speedY: 3 * (Math.random() > 0.5 ? 1 : -1), //Velocidade negativa ou positiva entre 3 e 5 do eixo X (Ambos criados com chatgpt)
+            maxSpeed: 10,
 
             _mover: function () {
                 this.x += this.speedX;
                 this.y += this.speedY;
+
+                if (Math.abs(this.speedX) > this.maxSpeed) {
+                    this.speedX = this.maxSpeed * Math.sign(this.speedX); //Verifica se ultrapassa a velocidade máxima
+                }
 
                 // Rebote nas laterais (superior e inferior)
                 if (this.y - this.r < 0 || this.y + this.r > espaco.h) {
@@ -281,15 +286,15 @@
             espaco.h = canvasEl.height;
 
             if (window.innerWidth < 768) { // Ajusta o tamanho para celulares
-                naveEsquerda.h = 100; 
+                naveEsquerda.h = 100;
                 naveDireita.h = 100;
-                naveEsquerda.w = 10; 
+                naveEsquerda.w = 10;
                 naveDireita.w = 10;
-                bola.r = 10; 
-                bola.speedX = 2 * (Math.random() > 0.5 ? 1 : -1); 
+                bola.r = 10;
+                bola.speedX = 2 * (Math.random() > 0.5 ? 1 : -1);
                 bola.speedY = 2 * (Math.random() > 0.5 ? 1 : -1);
             } else {
-                naveEsquerda.h = 200; 
+                naveEsquerda.h = 200;
                 naveDireita.h = 200;
                 naveEsquerda.w = 15;
                 naveDireita.w = 15;
