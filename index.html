@@ -234,15 +234,56 @@
             }
         }
 
-        function setup() {
-            canvasEl.width = window.innerWidth  //Pega a largura e altura da tela
-            canvasCtx.width = window.innerWidth
-
-            canvasEl.height = window.innerHeight
-            canvasCtx.height = window.innerHeight
-
-            espaco.criarEstrelas(); //Cria as estrelas apenas uma vez por partida
+        function verificarOrientacao() {
+            const aviso = document.getElementById("aviso-orientacao");
+            if (window.innerWidth < window.innerHeight) {
+                aviso.style.display = "block"; // Mostra a mensagem
+            } else {
+                aviso.style.display = "none"; // Esconde a mensagem
+                setup();
+            }
         }
+
+        // Quando a janela for redimensionada, verifica a orientação
+        window.addEventListener("resize", verificarOrientacao);
+
+        // Cria a div de aviso de orientação logo que a página carregar (Criado com chatgpt)
+        document.addEventListener("DOMContentLoaded", function () {
+            const avisoDiv = document.createElement("div");
+            avisoDiv.id = "aviso-orientacao";
+            avisoDiv.style.position = "absolute";
+            avisoDiv.style.top = "50%";
+            avisoDiv.style.left = "50%";
+            avisoDiv.style.transform = "translate(-50%, -50%)";
+            avisoDiv.style.fontSize = "24px";
+            avisoDiv.style.fontWeight = "bold";
+            avisoDiv.style.color = "#fff";
+            avisoDiv.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
+            avisoDiv.style.padding = "10px";
+            avisoDiv.style.borderRadius = "5px";
+            avisoDiv.style.display = "none"; // Inicialmente escondido
+            avisoDiv.innerText = "Por favor, gire seu dispositivo para jogar na orientação horizontal.";
+            document.body.appendChild(avisoDiv);
+
+            verificarOrientacao(); // Verifica se a orientação está correta
+        });
+
+        function setup() {
+            if (window.innerWidth > window.innerHeight) {
+                canvasEl.width = window.innerWidth;
+                canvasEl.height = window.innerHeight;
+            } else {
+                canvasEl.width = window.innerHeight;
+                canvasEl.height = window.innerWidth;
+            }
+
+            espaco.w = canvasEl.width;
+            espaco.h = canvasEl.height;
+
+            espaco.criarEstrelas(); // Cria as estrelas apenas uma vez por partida
+        }
+
+
 
         function desenhar() {
             //Plano de Fundo
