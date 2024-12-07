@@ -75,6 +75,13 @@
         let jogoIniciado = false;
         let intervaloAnimacao;
 
+        document.addEventListener("keydown", (event) => {
+            if (event.code === "Space") {
+                alternarJogo();
+                event.preventDefault(); // Evita o scroll da página ao pressionar espaço
+            }
+        });
+        
         function alternarJogo() {
             jogoIniciado = !jogoIniciado;
 
