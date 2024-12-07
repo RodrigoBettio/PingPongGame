@@ -1,0 +1,59 @@
+/* Reset de margens e paddings */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(130deg, #000428, #004e92); /*Angulação do gradiente*/
+    color: #fff;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Estilo do container principal */
+.home-container {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 1;
+}
+
+/* Estilo para o título */
+h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+/* Estilo para os botões */
+.options button {
+    background: linear-gradient(130deg, #0e83f7, #459ae0);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin: 10px;
+}
+
+/* Estrelas geradas via JavaScript */
+.star {
+    position: absolute;
+    border-radius: 50%;
+    background-color: #fff;
+    opacity: 1;
+    animation: twinkle 1.5s infinite alternate;
+}
+
+/* Animação de brilho das estrelas */
+@keyframes twinkle {
+    0% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
