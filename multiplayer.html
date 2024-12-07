@@ -9,12 +9,23 @@
 
 <body>
     <button id="botao-iniciar">Iniciar Jogo</button>
+    <div id="overlay-pausa">
+        <p> Jogo Pausado</p>
+    </div>
     <canvas></canvas>
     <style>
         * {
             padding: 0;
             margin: 0;
             overflow: hidden;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            /* Remove barras de rolagem */
         }
 
         #botao-iniciar {
@@ -34,6 +45,28 @@
         #botao-iniciar:hover {
             background-color: #003a72;
         }
+
+        #overlay-pausa {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            display: none;
+            /* Começa escondido */
+        }
+
+        #overlay-pausa p {
+            margin: 0;
+        }
     </style>
     <script>
         const canvasEl = document.querySelector("canvas"), //Seletor do canvas
@@ -43,13 +76,18 @@
         let intervaloAnimacao;
 
         function alternarJogo() {
-            jogoIniciado = !jogoIniciado; 
+            jogoIniciado = !jogoIniciado;
+
+            const botao = document.getElementById("botao-iniciar");
+            const overlay = document.getElementById("overlay-pausa");
 
             if (jogoIniciado) {
-                document.getElementById("botao-iniciar").innerText = "Pausar Jogo";
+                botao.innerText = "Pausar Jogo";
+                overlay.style.display = "none"; // Esconde a sobreposição
                 iniciarAnimacao();
             } else {
-                document.getElementById("botao-iniciar").innerText = "Iniciar Jogo";
+                botao.innerText = "Iniciar Jogo";
+                overlay.style.display = "flex"; // Mostra a sobreposição
                 cancelarAnimacao();
             }
         }
@@ -161,7 +199,7 @@
             //Velocidade e direção aleatórias 
             speedX: 3 * (Math.random() > 0.5 ? 1 : -1), //Velocidade negativa ou positiva entre 3 e 5 do eixo X
             speedY: 3 * (Math.random() > 0.5 ? 1 : -1), //Velocidade negativa ou positiva entre 3 e 5 do eixo X (Ambos criados com chatgpt)
-            maxSpeed: 10,
+            maxSpeed: 8,
 
             _mover: function () {
                 if (!jogoIniciado) return;
