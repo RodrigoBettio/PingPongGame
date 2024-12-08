@@ -1,17 +1,19 @@
 * {
-    margin: 0;
     padding: 0;
+    margin: 0;
     overflow: hidden;
 }
 
-html, body {
+html,
+body {
     width: 100%;
     height: 100%;
 }
 
-/* ===== Botões ===== */
-#botao-iniciar, #botao-reset {
+/* ==== BOTÕES ====*/
+#botao-iniciar {
     position: absolute;
+    top: 20px;
     left: 50%;
     transform: translateX(-50%);
     padding: 10px 20px;
@@ -24,22 +26,16 @@ html, body {
     cursor: pointer;
     z-index: 11;
     transition: background-color 0.3s, transform 0.3s ease-in-out;
-    display: none;
 }
 
-#botao-iniciar {
-    top: 20px;
-    display: block;
-}
-
-#botao-iniciar:hover, #botao-reset:hover {
+#botao-iniciar:hover {
     background-color: #003a72;
 }
 
-/* ===== Overlay de Pausa ===== */
+
 #overlay-pausa {
     position: absolute;
-    top: 0;
+    top: 0%;
     left: 0;
     width: 100%;
     height: 100%;
@@ -52,8 +48,43 @@ html, body {
     align-items: center;
     z-index: 10;
     display: none;
+    /* Começa escondido */
 }
 
 #overlay-pausa p {
     margin: 0;
+}
+
+#botao-reset {
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px 20px;
+    background-color: #004e92;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 11;
+    display: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s, transform 0.2s ease-in-out;
+}
+
+#botao-reset:hover {
+    background-color: #003a72;
+}
+
+.casa {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 24px;
+    color: #ffffff;
+    text-decoration: none;
+    z-index: 11;
+    display: none;
 }

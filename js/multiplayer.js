@@ -17,15 +17,18 @@ function alternarJogo() {
     const botao = document.getElementById("botao-iniciar");
     const overlay = document.getElementById("overlay-pausa");
     const botaoReset = document.getElementById("botao-reset");
+    const casa = document.getElementById("casa");
 
     if (jogoIniciado) {
         botao.innerText = "Pausar Jogo";
         overlay.style.display = "none"; // Esconde a sobreposição
         botaoReset.style.display = "none";
+        casa.style.display = "none";
     } else {
         botao.innerText = "Iniciar Jogo";
         overlay.style.display = "flex"; // Mostra a sobreposição
         botaoReset.style.display = "block";
+        casa.style.display = "flex";
     }
 }
 
