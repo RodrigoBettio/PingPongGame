@@ -40,6 +40,7 @@
             border-radius: 5px;
             font-size: 16px;
             cursor: pointer;
+            z-index: 11;
         }
 
         #botao-iniciar:hover {
@@ -202,22 +203,20 @@
             //Velocidade e direção aleatórias 
             speedX: 3 * (Math.random() > 0.5 ? 1 : -1), //Velocidade negativa ou positiva entre 3 e 5 do eixo X
             speedY: 3 * (Math.random() > 0.5 ? 1 : -1), //Velocidade negativa ou positiva entre 3 e 5 do eixo X (Ambos criados com chatgpt)
-            maxSpeed: 8,
+            maxSpeed: 15,
 
             _mover: function () {
                 if (!jogoIniciado) return;
                 this.x += this.speedX;
                 this.y += this.speedY;
 
-                if (Math.abs(this.speedX) > this.maxSpeed) {
-                    this.speedX = this.maxSpeed * Math.sign(this.speedX); //Verifica se ultrapassa a velocidade máxima
-                }
-
                 // Rebote nas laterais (superior e inferior)
                 if (this.y - this.r < 0 || this.y + this.r > espaco.h) {
                     this.speedY *= -1; // Inverte a direção vertical
-                    this.speedX *= 1.08;
-                    this.speedY *= 1.08;
+
+                    // Incremento com limitação
+                    this.speedX = Math.min(Math.abs(this.speedX * 1.08), this.maxSpeed) * Math.sign(this.speedX); //Abs pega o valor absoluto 
+                    this.speedY = Math.min(Math.abs(this.speedY * 1.08), this.maxSpeed) * Math.sign(this.speedY); //Sign retorna só o sinal
                 }
 
                 // Rebote na nave esquerda
@@ -408,7 +407,7 @@
 
 
         function desenhar() {
-            
+
             if (jogoIniciado) {
                 // Movimento das naves
                 if (teclas["w"] && naveEsquerda.y > 0) {
@@ -423,13 +422,13 @@
                     naveDireita.y += 5;
                 }
             }
-            
+
             //Plano de Fundo
             espaco.desenhar()
 
             //Linha do jogo
             linha.desenhar()
-           
+
 
             //Criação das "naves"
             //Nave esquerda
