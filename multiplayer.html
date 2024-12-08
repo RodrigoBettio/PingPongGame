@@ -408,23 +408,28 @@
 
 
         function desenhar() {
+            
+            if (jogoIniciado) {
+                // Movimento das naves
+                if (teclas["w"] && naveEsquerda.y > 0) {
+                    naveEsquerda.y -= 5;
+                } else if (teclas["s"] && naveEsquerda.y + naveEsquerda.h < espaco.h) {
+                    naveEsquerda.y += 5;
+                }
+
+                if (teclas["ArrowUp"] && naveDireita.y > 0) {
+                    naveDireita.y -= 5;
+                } else if (teclas["ArrowDown"] && naveDireita.y + naveDireita.h < espaco.h) {
+                    naveDireita.y += 5;
+                }
+            }
+            
             //Plano de Fundo
             espaco.desenhar()
 
             //Linha do jogo
             linha.desenhar()
-            // Movimento das naves
-            if (teclas["w"] && naveEsquerda.y > 0) {
-                naveEsquerda.y -= 5;
-            } else if (teclas["s"] && naveEsquerda.y + naveEsquerda.h < espaco.h) {
-                naveEsquerda.y += 5;
-            }
-
-            if (teclas["ArrowUp"] && naveDireita.y > 0) {
-                naveDireita.y -= 5;
-            } else if (teclas["ArrowDown"] && naveDireita.y + naveDireita.h < espaco.h) {
-                naveDireita.y += 5;
-            }
+           
 
             //Criação das "naves"
             //Nave esquerda
