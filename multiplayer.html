@@ -12,6 +12,7 @@
     <div id="overlay-pausa">
         <p> Jogo Pausado</p>
     </div>
+    <button id="botao-reset">Reiniciar Partida</button>
     <canvas></canvas>
     <style>
         * {
@@ -37,17 +38,20 @@
             border: none;
             border-radius: 5px;
             font-size: 16px;
+            font-weight: bold;
             cursor: pointer;
             z-index: 11;
+            transition: background-color 0.3s, transform 0.3s ease-in-out;
         }
 
         #botao-iniciar:hover {
             background-color: #003a72;
         }
 
+
         #overlay-pausa {
             position: absolute;
-            top: 0;
+            top: 0%;
             left: 0;
             width: 100%;
             height: 100%;
@@ -66,6 +70,30 @@
         #overlay-pausa p {
             margin: 0;
         }
+
+        #botao-reset {
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            background-color: #004e92;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 11;
+            display: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s, transform 0.2s ease-in-out;
+        }
+
+        #botao-reset:hover {
+            background-color: #003a72;    
+        }
+
     </style>
     <script>
         const canvasEl = document.querySelector("canvas"), //Seletor do canvas
@@ -85,16 +113,28 @@
 
             const botao = document.getElementById("botao-iniciar");
             const overlay = document.getElementById("overlay-pausa");
+            const botaoReset = document.getElementById("botao-reset");
 
             if (jogoIniciado) {
                 botao.innerText = "Pausar Jogo";
                 overlay.style.display = "none"; // Esconde a sobreposição
+                botaoReset.style.display = "none";
             } else {
                 botao.innerText = "Iniciar Jogo";
                 overlay.style.display = "flex"; // Mostra a sobreposição
+                botaoReset.style.display = "block";
             }
         }
 
+        function resetarPlacar() {
+            placar.humano1 = 0;
+            placar.humano2 = 0;
+
+            bola._reset();
+        }
+
+
+        document.getElementById("botao-reset").addEventListener("click", resetarPlacar);
         document.getElementById("botao-iniciar").addEventListener("click", alternarJogo);
 
         const gapX = 10
