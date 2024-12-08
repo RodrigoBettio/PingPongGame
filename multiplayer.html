@@ -81,7 +81,7 @@
                 event.preventDefault(); // Evita o scroll da página ao pressionar espaço
             }
         });
-        
+
         function alternarJogo() {
             jogoIniciado = !jogoIniciado;
 
@@ -97,10 +97,6 @@
                 overlay.style.display = "flex"; // Mostra a sobreposição
                 cancelarAnimacao();
             }
-        }
-
-        function iniciarAnimacao() {
-            intervaloAnimacao = requestAnimationFrame(animar);
         }
 
         // Cancela o loop de animação
@@ -291,15 +287,22 @@
         });
 
         document.addEventListener("keyup", function (event) {
-            if (!jogoIniciado) return;
             teclas[event.key] = false; // Marca a tecla como solta
         });
 
 
         // Para o celular
-        canvasEl.addEventListener("touchmove", moverNave); //Para o usuário deslizar o dedo na tela
+        canvasEl.addEventListener("touchmove", function (event) {
+            if (!jogoIniciado) return; // Apenas processa o movimento se o jogo estiver ativo
+            moverNave(event); // Chama a função existente de toque
+        });
+
+        canvasEl.addEventListener("click", function () {
+            alternarJogo(); // Alterna o estado do jogo ao tocar no canvas
+        });
 
         function moverNave(event) {
+            if (!jogoIniciado) return;
             // Evita o scroll
             event.preventDefault();
 
